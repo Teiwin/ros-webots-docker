@@ -1,0 +1,46 @@
+services:
+  webots:
+    image: webots_ros:latest
+    init: true
+    command: sh -c "xvfb-run -a webots --stdout --stderr --batch --stream --mode=realtime /SIMU/worlds/simu.wbt"
+    depends_on:
+      - ros-master
+    ports:
+      - 1234:1234
+    volumes:
+      - ./SIMU:/SIMU
+    networks:
+      - ros-network
+    environment:
+      - "ROS_MASTER_URI=http://ros-master:11311"
+    restart: unless-stopped
+
+  ros-master:
+    image: ros:noetic-ros-core
+    command: stdbuf -o L roscore
+    networks:
+      - ros-network
+    restart: unless-stopped
+    
+  rospackage:
+    image: ros_wd:latest
+    init: true
+    command: /bin/bash
+    container_name: ros_it
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./catkin_ws:/catkin_ws
+      - ./pyenv:/pyenv
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    networks:
+      - ros-network
+    environment:
+      - "ROS_MASTER_URI=http://ros-master:11311"
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+    restart: unless-stopped
+
+networks:
+  ros-network:
+    driver: bridge

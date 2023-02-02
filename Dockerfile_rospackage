@@ -1,0 +1,17 @@
+# real image
+FROM ros:noetic
+
+# install opencv dependencies
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./requirements.txt /requirements.txt
+
+WORKDIR /catkin_ws
+COPY ./ros_entrypoint.sh /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
+
+CMD /bin/bash
