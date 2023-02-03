@@ -13,7 +13,7 @@ Of course the controller and the name of the topics are specific to my project, 
 ## create docker images
 
 build Dockerfile_rospackage and Dockerfile_webots_ros  
-`docker build -t ros_wd -f Dockerfile_rospackage .`  
+`docker build -t ros_it -f Dockerfile_rospackage .`  
 `docker build -t webots_ros -f Dockerfile_webots_ros .`
 
 

@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     
   rospackage:
-    image: ros_wd:latest
+    image: ros_it:latest
     init: true
     command: /bin/bash
     container_name: ros_it
